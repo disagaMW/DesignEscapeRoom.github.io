@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escape Room - Level 3: Proximity</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="centered-layout">
+
+    <ul class="bg-shapes">
+        <li></li> <li></li> <li></li> <li></li> <li></li> <li></li> <li></li> <li></li> <li></li> <li></li> </ul>
+
+    <button id="dark-mode-toggle">🌙 Dark Mode</button>
+
+    <main id="page-wrapper">
+        <div class="instructions">
+            <h1>Level 3: The Cluttered Desk</h1>
+            <p>Establish <strong>Proximity</strong> by grouping items with <strong>Consistent</strong> visual traits into separate zones.</p>
+        </div>
+
+        <div class="room-container">
+            
+            <div class="zone-label">Unorganized Area</div>
+            <div class="drop-zone" id="start-zone">
+                <div class="item circle" draggable="true" id="item1"></div>
+                <div class="item square" draggable="true" id="item2"></div>
+                <div class="item circle" draggable="true" id="item3"></div>
+                <div class="item square" draggable="true" id="item4"></div>
+                <div class="item square" draggable="true" id="item5"></div>
+                <div class="item circle" draggable="true" id="item6"></div>
+            </div>
+            
+            <div class="zones-wrapper">
+                <div class="target-zone">
+                    <div class="zone-label">Zone A</div>
+                    <div class="drop-zone" id="zone1"></div>
+                </div>
+                <div class="target-zone">
+                    <div class="zone-label">Zone B</div>
+                    <div class="drop-zone" id="zone2"></div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button id="reset-btn">🔄 Reset</button>
+                <button id="next-btn" onclick="goToLevel4()" disabled>Proceed to Level 4</button>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

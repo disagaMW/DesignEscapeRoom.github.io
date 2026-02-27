@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escape Room - Level 2: Contrast</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="centered-layout">
+
+    <ul class="bg-shapes">
+        <li></li> <li></li> <li></li> <li></li> <li></li> <li></li> <li></li> <li></li> <li></li> <li></li> </ul>
+
+    <button id="dark-mode-toggle">🌙 Dark Mode</button>
+
+    <main id="page-wrapper">
+        <div class="instructions">
+            <h1>Level 2: The Camouflage</h1>
+            <p>Something is hidden in plain sight. Use the color wheel to create <strong>Contrast</strong> and reveal the key.</p>
+        </div>
+
+        <div class="room-container">
+            
+            <div class="color-canvas" id="canvas">
+                <div class="hidden-shape" id="key-shape"></div>
+            </div>
+            
+            <div class="controls">
+                <p>Adjust Background Hue</p>
+                <input type="range" id="hue-slider" min="0" max="360" value="10">
+            </div>
+
+            <div style="text-align: center;">
+                <button id="next-btn" onclick="goToLevel3()" disabled>Proceed to Level 3</button>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

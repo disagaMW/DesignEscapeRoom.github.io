@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escape Room - Level 5: The Grand Finale</title>
+    <style>
+        /* --- BASE STYLES & DARK MODE --- */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            transition: background-color 0.4s ease, color 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+
+        /* --- HEADER & INSTRUCTIONS --- */
+        .header-bar {
+            padding: 15px 30px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        body.dark-mode .header-bar { background: #1e1e1e; }
+
+        .header-bar h1 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+
+        .btn-submit { background-color: #9b59b6; color: white; font-size: 1.1rem; }
+        .btn-submit:hover { background-color: #8e44ad; transform: scale(1.05); }
+        
+        .btn-dark { background-color: #333; color: white; }
+        body.dark-mode .btn-dark { background-color: #f4f4f9; color: #121212; }
+
+        /* --- WORKSPACE LAYOUT --- */
+        .workspace {
+            display: flex;
+            flex: 1;
+            padding: 20px;
+            gap: 20px;
+            overflow: hidden;
+        }
+
+        /* The Menu (Left Side) */
+        .menu-panel {
+            width: 300px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            overflow-y: auto;
+            border: 2px solid #ccc;
+        }
+
+        body.dark-mode .menu-panel { background: #1e1e1e; border-color: #444; }
+
+        .menu-title {
+            font-weight: bold;
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+            margin-bottom: 10px;
+        }
+
+        /* The Canvas (Right Side) */
+        .canvas-panel {
+            flex: 1;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            grid-template-rows: auto auto 1fr auto;
+            gap: 15px;
+            border: 2px solid #ccc;
+            overflow-y: auto;
+        }
+
+        body.dark-mode .canvas-panel { background: #1e1e1e; border-color: #444; }
+
+        /* --- DROP ZONES --- */
+        .drop-zone {
+            background-color: #f9f9fc;
+            border: 2px dashed #bdc3c7;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #95a5a6;
+            font-weight: bold;
+            transition: all 0.2s;
+            position: relative; /* Crucial for Absolute Positioning of children */
+            overflow: hidden; /* Keeps child elements inside the rounded corners */
+        }
+
+        body.dark-mode .drop-zone { background-color: #2a2a2a; border-color: #555; }
+        .drop-zone.drag-over { background-color: #e8f4fd; border-color: #3498db; color: #3498db; }
+
+        /* Placeholder text inside the zone */
+        .drop-zone span { pointer-events: none; z-index: 1; }
+
+        /* Specific Zone Layout Constraints */
+        #zone-header { grid-column: 1 / -1; min-height: 80px; }
+        #zone-hero { grid-column: 1 / -1; min-height: 200px; }
+        #zone-sidebar { grid-column: 1 / 2; min-height: 400px; }
+        #zone-products { grid-column: 2 / 3; min-height: 400px; }
+        #zone-cta { grid-column: 1 / -1; min-height: 100px; }
+        #zone-footer { grid-column: 1 / -1; min-height: 60px; }
+
+        /* --- DRAGGABLE UI ELEMENTS --- */
+        .ui-element {
+            background-color: #ecf0f1;
+            border: 1px solid #bdc3c7;
+            border-radius: 5px;
+            padding: 15px;
+            cursor: grab;
+            text-align: center;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.2s, width 0.2s, height 0.2s;
+            box-sizing: border-box;
+            z-index: 10;
+        }
+
+        .ui-element:active { cursor: grabbing; }
+        .ui-element:hover { transform: scale(1.02); }
+        body.dark-mode .ui-element { background-color: #333; border-color: #555; color: #eee;}
+
+        /* ✨ THE RESIZING MAGIC ✨ */
+        /* When a UI Element is inside a Drop Zone, it snaps to fill the entire space perfectly */
+        .drop-zone .ui-element {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 0; 
+            margin: 0;
+            /* Reset hover scale so it doesn't pop out of the grid */
+            transform: scale(1) !important; 
+        }
+
+        /* --- Element Specific Content Simulation --- */
+        .el-header { display: flex; justify-content: space-between; align-items: center; }
+        .el-header::before { content: "🛒 LOGO"; font-size: 1.2rem; }
+        .el-header::after { content: "Home | Shop | Cart"; font-weight: normal; }
+        
+        .el-hero { display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #3498db, #8e44ad); color: white; border: none; font-size: 1.5rem; }
+        
+        .el-sidebar { display: flex; flex-direction: column; gap: 10px; text-align: left; }
+        .el-sidebar::before { content: "Categories"; border-bottom: 1px solid #ccc; padding-bottom: 5px;}
+        .el-sidebar::after { content: "☐ Electronics \A ☐ Clothing \A ☐ Books"; white-space: pre; font-weight: normal; line-height: 1.5; }
+        
+        /* Product grid handles its own internal layout */
+        .el-products { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; background: transparent !important; border: none; padding: 10px; box-shadow: none !important; }
+        .product-card { background: white; border: 1px solid #ccc; border-radius: 5px; min-height: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        body.dark-mode .product-card { background: #444; border-color: #666; }
+        .product-card::before { content: "📷"; font-size: 2rem; }
+
+        .el-cta { background-color: #e74c3c !important; color: white !important; border: none; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; letter-spacing: 2px; }
+        
+        .el-footer { display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: normal; color: #7f8c8d; }
+
+        /* --- MODAL OVERLAY --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.8);
+            display: none; 
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        body.dark-mode .modal-content { background: #1e1e1e; color: white; }
+
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 10px solid #3498db;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 0 auto 20px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+
+    
+
+    <div class="header-bar">
+        <h1>Level 5: Master the Layout</h1>
+        <div>
+            <button class="btn btn-dark" id="dark-mode-toggle">🌙 Dark Mode</button>
+            <button class="btn btn-submit" onclick="submitDesign()">✅ Submit Design</button>
+        </div>
+    </div>
+
+    <div class="workspace">
+        
+        <div class="menu-panel" id="menu-zone">
+            <div class="menu-title">Uncategorized Elements</div>
+            <div class="ui-element el-hero" draggable="true" id="item-hero">PROMO BANNER</div>
+            <div class="ui-element el-sidebar" draggable="true" id="item-sidebar"></div>
+            <div class="ui-element el-products" draggable="true" id="item-products">
+                <div class="product-card"></div><div class="product-card"></div><div class="product-card"></div>
+            </div>
+            <div class="ui-element el-header" draggable="true" id="item-header"></div>
+            <div class="ui-element el-footer" draggable="true" id="item-footer">© 2026 E-Commerce Store</div>
+            <div class="ui-element el-cta" draggable="true" id="item-cta">🔥 LIMITED TIME: 50% OFF 🔥</div>
+        </div>
+
+        <div class="canvas-panel">
+            <div class="drop-zone" id="zone-header" data-expected="item-header"><span>Drop Header Here</span></div>
+            <div class="drop-zone" id="zone-hero" data-expected="item-hero"><span>Drop Hero Banner Here</span></div>
+            <div class="drop-zone" id="zone-sidebar" data-expected="item-sidebar"><span>Drop Sidebar Here</span></div>
+            <div class="drop-zone" id="zone-products" data-expected="item-products"><span>Drop Product Grid Here</span></div>
+            <div class="drop-zone" id="zone-cta" data-expected="item-cta"><span>Drop Call to Action Here</span></div>
+            <div class="drop-zone" id="zone-footer" data-expected="item-footer"><span>Drop Footer Here</span></div>
+        </div>
+
+    </div>
+
+    <div class="modal-overlay" id="result-modal">
+        <div class="modal-content">
+            <h2 id="modal-title">Design Evaluation</h2>
+            <div class="score-circle" id="score-display">0%</div>
+            <p id="modal-feedback">Evaluating layout based on hierarchy, balance, and proximity...</p>
+            <div class="modal-buttons">
+                <button class="btn btn-dark" onclick="retry()">🔄 Retry</button>
+                <button class="btn btn-submit" onclick="showSolution()">👁️ See 100% Correct Layout</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const darkModeToggle = document.getElementById('dark-mode-toggle');
+        darkModeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            darkModeToggle.textContent = document.body.classList.contains('dark-mode') ? '☀️ Light Mode' : '🌙 Dark Mode';
+        });
+
+        const items = document.querySelectorAll('.ui-element');
+        const zones = document.querySelectorAll('.drop-zone, #menu-zone');
+        let draggedItem = null;
+
+        items.forEach(item => {
+            item.addEventListener('dragstart', function() {
+                draggedItem = this;
+                setTimeout(() => this.style.display = 'none', 0);
+            });
+            item.addEventListener('dragend', function() {
+                setTimeout(() => {
+                    this.style.display = ''; 
+                    draggedItem = null;
+                }, 0);
+            });
+        });
+
+        zones.forEach(zone => {
+            zone.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                if(this.id !== 'menu-zone') this.classList.add('drag-over');
+            });
+
+            zone.addEventListener('dragleave', function() {
+                this.classList.remove('drag-over');
+            });
+
+            zone.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.classList.remove('drag-over');
+                
+                if (draggedItem) {
+                    if (this.id !== 'menu-zone') {
+                        // Prevent stacking: Move existing item back to the menu
+                        const existingElement = this.querySelector('.ui-element');
+                        if (existingElement) {
+                            document.getElementById('menu-zone').appendChild(existingElement);
+                        }
+                    }
+                    this.appendChild(draggedItem);
+                }
+            });
+        });
+
+        function submitDesign() {
+            const canvasZones = document.querySelectorAll('.canvas-panel .drop-zone');
+            let correctCount = 0;
+            const totalElements = canvasZones.length;
+
+            canvasZones.forEach(zone => {
+                const expectedId = zone.getAttribute('data-expected');
+                const droppedElement = zone.querySelector('.ui-element');
+                
+                if (droppedElement && droppedElement.id === expectedId) {
+                    correctCount++;
+                }
+            });
+
+            const percentage = Math.round((correctCount / totalElements) * 100);
+            showModal(percentage);
+        }
+
+        const modal = document.getElementById('result-modal');
+        const scoreDisplay = document.getElementById('score-display');
+        const modalTitle = document.getElementById('modal-title');
+        const modalFeedback = document.getElementById('modal-feedback');
+
+        function showModal(percentage) {
+            modal.style.display = 'flex';
+            
+            let currentScore = 0;
+            const timer = setInterval(() => {
+                scoreDisplay.textContent = currentScore + '%';
+                if (currentScore === percentage) {
+                    clearInterval(timer);
+                    
+                    if (percentage === 100) {
+                        scoreDisplay.style.borderColor = '#27ae60';
+                        scoreDisplay.style.color = '#27ae60';
+                        modalTitle.textContent = "Perfect Design!";
+                        modalFeedback.textContent = "Excellent application of Proximity, Hierarchy, and Balance!";
+                    } else if (percentage >= 50) {
+                        scoreDisplay.style.borderColor = '#f39c12';
+                        scoreDisplay.style.color = '#f39c12';
+                        modalTitle.textContent = "Good Start";
+                        modalFeedback.textContent = "Some elements are out of place. Think about standard web hierarchy.";
+                    } else {
+                        scoreDisplay.style.borderColor = '#e74c3c';
+                        scoreDisplay.style.color = '#e74c3c';
+                        modalTitle.textContent = "Design Chaos";
+                        modalFeedback.textContent = "Your layout lacks structure. Try to group related items and emphasize the Hero banner.";
+                    }
+                } else {
+                    currentScore++;
+                }
+            }, 10);
+        }
+
+        function retry() {
+            modal.style.display = 'none';
+            scoreDisplay.style.borderColor = '#3498db';
+            scoreDisplay.style.color = '';
+        }
+
+        function showSolution() {
+            const canvasZones = document.querySelectorAll('.canvas-panel .drop-zone');
+            canvasZones.forEach(zone => {
+                const expectedId = zone.getAttribute('data-expected');
+                const correctElement = document.getElementById(expectedId);
+                
+                if(correctElement) {
+                    zone.appendChild(correctElement);
+                }
+            });
+
+            modal.style.display = 'none';
+            // Optional delay so the user sees the solution cleanly
+            setTimeout(() => alert("The 100% correct layout is now perfectly snapped to the grid."), 100);
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escape Room - Level 4: Typography & Hierarchy</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="centered-layout">
+
+    <ul class="bg-shapes">
+        <li></li> <li></li> <li></li> <li></li> <li></li> <li></li> <li></li> <li></li> <li></li> <li></li> </ul>
+
+    <button id="dark-mode-toggle">🌙 Dark Mode</button>
+
+    <main id="page-wrapper">
+        <div class="instructions">
+            <h1>Level 4: The Ransom Note</h1>
+            <p>Restore <strong>Hierarchy</strong> and clean up the <strong>Typography</strong> to reveal the final code.</p>
+        </div>
+
+        <div class="room-container">
+            
+            <div class="ransom-note" id="note">
+                <div class="note-title">Urgent Message</div>
+                <div class="note-subtitle">Please read carefully</div>
+                <div class="note-body">
+                    <span>The</span><span>final</span><span>passcode</span><span>to</span><span>complete</span><span>your</span><span>design</span><span>evaluation</span><span>is:</span><span>CREATIVITY</span>
+                </div>
+            </div>
+            
+            <div class="controls-grid">
+                <div class="control-group">
+                    <label for="slider-hierarchy">Visual Hierarchy <span>0%</span></label>
+                    <input type="range" id="slider-hierarchy" min="0" max="100" value="0">
+                </div>
+                <div class="control-group">
+                    <label for="slider-spacing">Readability (Spacing) <span>0%</span></label>
+                    <input type="range" id="slider-spacing" min="0" max="100" value="0">
+                </div>
+                <div class="control-group">
+                    <label for="slider-harmony">Visual Harmony (Alignment) <span>0%</span></label>
+                    <input type="range" id="slider-harmony" min="0" max="100" value="0">
+                </div>
+            </div>
+
+            <input type="text" id="passcode-input" placeholder="Enter the hidden passcode here..." autocomplete="off">
+
+            <button id="finish-btn" onclick="goToLevel5()" disabled>Proceed to Final Level</button>
+            
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

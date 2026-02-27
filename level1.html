@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escape Room - Level 1: Balance</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="centered-layout">
+
+    <ul class="bg-shapes">
+        <li></li> <li></li> <li></li> <li></li> <li></li> <li></li> <li></li> <li></li> <li></li> <li></li> </ul>
+
+    <button id="dark-mode-toggle">🌙 Dark Mode</button>
+
+    <main id="page-wrapper">
+        <div class="instructions">
+            <h1>Level 1: The Tilted Room</h1>
+            <p>This layout feels heavy on one side. Restore the <strong>Balance</strong> to unlock the door.</p>
+        </div>
+
+        <div class="room-container">
+            <div class="scale">
+                <div class="weight" id="visual-weight"></div>
+            </div>
+            
+            <div class="controls">
+                <input type="range" id="balance-slider" min="0" max="100" value="0">
+            </div>
+
+            <div style="text-align: center;">
+                <button id="next-btn" onclick="goToLevel2()" disabled>Proceed to Level 2</button>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
