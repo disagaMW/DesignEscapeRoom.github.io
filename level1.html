@@ -8,10 +8,28 @@
 </head>
 <body class="centered-layout">
 
+    <script>
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+        }
+    </script>
+
     <ul class="bg-shapes">
         <li></li> <li></li> <li></li> <li></li> <li></li> <li></li> <li></li> <li></li> <li></li> <li></li> </ul>
 
-    <button id="dark-mode-toggle">🌙 Dark Mode</button>
+    <header class="global-header">
+        <a href="index.html" class="logo">🎨 The Design Escape</a>
+        <nav class="global-nav">
+            <a href="index.html">Home</a>
+            <a href="level1.html">L1</a>
+            <a href="level2.html">L2</a>
+            <a href="level3.html">L3</a>
+            <a href="level4.html">L4</a>
+            <a href="level5.html">L5</a>
+            <button id="dark-mode-toggle">🌙 Dark Mode</button>
+            <button id="logout-btn">🚪 Log Out</button>
+        </nav>
+    </header>
 
     <main id="page-wrapper">
         <div class="instructions">
@@ -33,6 +51,10 @@
             </div>
         </div>
     </main>
+
+    <footer class="global-footer">
+        Design Ideation Module Final Project | University of Kelaniya
+    </footer>
 
     <script src="script.js"></script>
 </body>

@@ -1,17 +1,58 @@
 /* =========================================
    GLOBAL UTILITIES
 ========================================= */
-// Dark Mode Logic (Runs on every page if toggle exists)
 const darkModeToggle = document.getElementById('dark-mode-toggle');
+
+// 1. Update the button text on load (the HTML script already fixed the background!)
+if (document.body.classList.contains('dark-mode') && darkModeToggle) {
+    darkModeToggle.textContent = '☀️ Light Mode';
+}
+
+// 2. The Button Click Logic
 if (darkModeToggle) {
     darkModeToggle.addEventListener('click', () => {
         document.body.classList.toggle('dark-mode');
+        
         if (document.body.classList.contains('dark-mode')) {
+            localStorage.setItem('theme', 'dark');
             darkModeToggle.textContent = '☀️ Light Mode';
         } else {
+            localStorage.setItem('theme', 'light');
             darkModeToggle.textContent = '🌙 Dark Mode';
         }
     });
+}
+
+/* =========================================
+   SMART SCROLLING HEADER
+========================================= */
+const globalHeader = document.querySelector('.global-header');
+let lastScrollY = window.scrollY;
+
+if (globalHeader) {
+    window.addEventListener('scroll', () => {
+        // If scrolling down AND past the header's height (75px)
+        if (window.scrollY > lastScrollY && window.scrollY > 75) {
+            globalHeader.classList.add('header-hidden');
+        } 
+        // If scrolling up
+        else {
+            globalHeader.classList.remove('header-hidden');
+        }
+        
+        // Update the last scroll position
+        lastScrollY = window.scrollY;
+    });
+}
+
+// Math Utility
+function mapRange(value, inMin, inMax, outMin, outMax) {
+    return (value - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
+}
+
+// Math Utility
+function mapRange(value, inMin, inMax, outMin, outMax) {
+    return (value - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
 }
 
 /* =========================================
@@ -194,14 +235,24 @@ if (ransomNote) {
 /* =========================================
    LEVEL 5 LOGIC (Grand Finale Layout)
 ========================================= */
-const l5Elements = document.querySelectorAll('.ui-element'); // Specific to Level 5
+const l5Elements = document.querySelectorAll('.ui-element'); 
 if (l5Elements.length > 0) {
     const l5Zones = document.querySelectorAll('.canvas-panel .drop-zone, #menu-zone');
     let draggedL5Item = null;
 
     l5Elements.forEach(item => {
-        item.addEventListener('dragstart', function() { draggedL5Item = this; setTimeout(() => this.style.display = 'none', 0); });
-        item.addEventListener('dragend', function() { setTimeout(() => { this.style.display = ''; draggedL5Item = null; }, 0); });
+        item.addEventListener('dragstart', function() { 
+            draggedL5Item = this; 
+            document.body.classList.add('is-dragging'); // Crucial bug fix
+            setTimeout(() => this.style.display = 'none', 0); 
+        });
+        item.addEventListener('dragend', function() { 
+            setTimeout(() => { 
+                this.style.display = ''; 
+                draggedL5Item = null; 
+                document.body.classList.remove('is-dragging'); 
+            }, 0); 
+        });
     });
 
     l5Zones.forEach(zone => {
@@ -209,14 +260,23 @@ if (l5Elements.length > 0) {
             e.preventDefault();
             if(this.id !== 'menu-zone') this.classList.add('drag-over');
         });
-        zone.addEventListener('dragleave', function() { this.classList.remove('drag-over'); });
+        
+        zone.addEventListener('dragleave', function() { 
+            this.classList.remove('drag-over'); 
+        });
+        
         zone.addEventListener('drop', function(e) {
             e.preventDefault();
             this.classList.remove('drag-over');
+            
             if (draggedL5Item) {
                 if (this.id !== 'menu-zone') {
+                    // Check if an item is already in this slot
                     const existing = this.querySelector('.ui-element');
-                    if (existing) document.getElementById('menu-zone').appendChild(existing);
+                    if (existing && existing !== draggedL5Item) {
+                        // Kick the old item back to the menu
+                        document.getElementById('menu-zone').appendChild(existing);
+                    }
                 }
                 this.appendChild(draggedL5Item);
             }
@@ -224,22 +284,28 @@ if (l5Elements.length > 0) {
     });
 }
 
-// Global functions for buttons (moved out of inline HTML for better practice)
-window.goToLevel2 = function() { window.location.href = "level2.html"; }
-window.goToLevel3 = function() { window.location.href = "level3.html"; }
-window.goToLevel4 = function() { window.location.href = "level4.html"; }
-window.goToLevel5 = function() { window.location.href = "level5.html"; }
+// =========================================
+// LEVEL 5 SUBMIT & MODAL FUNCTIONS
+// =========================================
 
-// Level 5 specific global functions
 window.submitDesign = function() {
     const canvasZones = document.querySelectorAll('.canvas-panel .drop-zone');
     let correctCount = 0;
+    
+    // Check each drop zone against the expected element ID
     canvasZones.forEach(zone => {
+        const expectedId = zone.getAttribute('data-expected');
         const droppedElement = zone.querySelector('.ui-element');
-        if (droppedElement && droppedElement.id === zone.getAttribute('data-expected')) correctCount++;
+        
+        if (droppedElement && droppedElement.id === expectedId) {
+            correctCount++;
+        }
     });
-    showModal(Math.round((correctCount / canvasZones.length) * 100));
-}
+
+    // Calculate the score
+    const percentage = Math.round((correctCount / canvasZones.length) * 100);
+    showModal(percentage);
+};
 
 window.showModal = function(percentage) {
     const modal = document.getElementById('result-modal');
@@ -247,33 +313,138 @@ window.showModal = function(percentage) {
     const modalTitle = document.getElementById('modal-title');
     const modalFeedback = document.getElementById('modal-feedback');
     
+    if (!modal) return; // Safety check
+    
     modal.style.display = 'flex';
     let currentScore = 0;
+    scoreDisplay.textContent = '0%';
+    
+    // Animate the score counting up
     const timer = setInterval(() => {
         scoreDisplay.textContent = currentScore + '%';
-        if (currentScore === percentage) {
+        if (currentScore >= percentage) {
             clearInterval(timer);
+            
+            // Set dynamic colors and text based on the final score
             if (percentage === 100) {
-                scoreDisplay.style.borderColor = '#27ae60'; scoreDisplay.style.color = '#27ae60';
-                modalTitle.textContent = "Perfect Design!"; modalFeedback.textContent = "Excellent application of Proximity, Hierarchy, and Balance!";
+                scoreDisplay.style.borderColor = '#27ae60';
+                scoreDisplay.style.color = '#27ae60';
+                modalTitle.textContent = "Perfect Design!";
+                modalFeedback.textContent = "Excellent application of Proximity, Hierarchy, and Balance!";
+            } else if (percentage >= 50) {
+                scoreDisplay.style.borderColor = '#f39c12';
+                scoreDisplay.style.color = '#f39c12';
+                modalTitle.textContent = "Good Start";
+                modalFeedback.textContent = "Some elements are out of place. Think about standard web hierarchy.";
             } else {
-                scoreDisplay.style.borderColor = '#e74c3c'; scoreDisplay.style.color = '#e74c3c';
-                modalTitle.textContent = "Keep Trying"; modalFeedback.textContent = "Your layout lacks structure. Check web hierarchy.";
+                scoreDisplay.style.borderColor = '#e74c3c';
+                scoreDisplay.style.color = '#e74c3c';
+                modalTitle.textContent = "Design Chaos";
+                modalFeedback.textContent = "Your layout lacks structure. Try to group related items and emphasize the Hero banner.";
             }
-        } else { currentScore++; }
-    }, 10);
-}
+        } else {
+            currentScore++;
+        }
+    }, 15); // Speed of the animation
+};
 
 window.retry = function() {
-    document.getElementById('result-modal').style.display = 'none';
+    const modal = document.getElementById('result-modal');
+    if (modal) modal.style.display = 'none';
+    
+    // Reset the circle colors for the next try
     const scoreDisplay = document.getElementById('score-display');
-    scoreDisplay.style.borderColor = '#3498db'; scoreDisplay.style.color = '';
-}
+    if (scoreDisplay) {
+        scoreDisplay.style.borderColor = '#3498db';
+        scoreDisplay.style.color = '';
+    }
+};
 
 window.showSolution = function() {
-    document.querySelectorAll('.canvas-panel .drop-zone').forEach(zone => {
-        const expectedElement = document.getElementById(zone.getAttribute('data-expected'));
-        if(expectedElement) zone.appendChild(expectedElement);
+    // Automatically move every element into its correct zone
+    const canvasZones = document.querySelectorAll('.canvas-panel .drop-zone');
+    canvasZones.forEach(zone => {
+        const expectedId = zone.getAttribute('data-expected');
+        const correctElement = document.getElementById(expectedId);
+        
+        if(correctElement) {
+            zone.appendChild(correctElement);
+        }
     });
-    document.getElementById('result-modal').style.display = 'none';
+
+    // Close the modal
+    const modal = document.getElementById('result-modal');
+    if (modal) modal.style.display = 'none';
+};
+
+/* =========================================
+   LOGIN & WELCOME LOGIC
+========================================= */
+const loginForm = document.getElementById('login-form');
+
+if (loginForm) {
+    loginForm.addEventListener('submit', function(e) {
+        e.preventDefault(); // Stops the page from refreshing
+        
+        // Grab the username and save it to the browser's memory
+        const username = document.getElementById('username').value;
+        localStorage.setItem('designerAlias', username);
+        
+        // Redirect to the Welcome Page
+        window.location.href = 'welcome.html';
+    });
 }
+
+// If we are on the Welcome page, personalize the greeting!
+const welcomeName = document.getElementById('welcome-name');
+if (welcomeName) {
+    const savedName = localStorage.getItem('designerAlias');
+    if (savedName) {
+        welcomeName.textContent = `Welcome, ${savedName}`;
+    }
+}
+
+// --- LOGOUT LOGIC ---
+const logoutBtn = document.getElementById('logout-btn');
+
+if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+        // 1. Remove the user's name from the browser's memory
+        localStorage.removeItem('designerAlias');
+        
+        // 2. Redirect them back to the login page
+        window.location.href = 'login.html';
+    });
+}
+
+// --- OPTIONAL SECURITY CHECK ---
+// If you want to force users to log in, this kicks them back to the login page 
+// if they try to access a level without a saved name!
+const currentPath = window.location.pathname;
+const savedAlias = localStorage.getItem('designerAlias');
+
+if (!currentPath.includes('login.html') && !savedAlias) {
+    window.location.href = 'login.html';
+
+
+
+}
+
+/* =========================================
+   LEVEL NAVIGATION FUNCTIONS
+========================================= */
+window.goToLevel2 = function() { 
+    window.location.href = "level2.html"; 
+};
+
+window.goToLevel3 = function() { 
+    window.location.href = "level3.html"; 
+};
+
+window.goToLevel4 = function() { 
+    window.location.href = "level4.html"; 
+};
+
+window.goToLevel5 = function() { 
+    window.location.href = "level5.html"; 
+};

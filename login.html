@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - The Design Escape</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="centered-layout">
+
+    <script>
+        if (localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-mode');
+    </script>
+
+    <ul class="bg-shapes">
+        <li></li><li></li><li></li><li></li><li></li>
+        <li></li><li></li><li></li><li></li><li></li>
+    </ul>
+
+    <header class="global-header">
+        <div class="logo">🎨 The Design Escape</div>
+        <nav class="global-nav">
+            <button id="dark-mode-toggle">🌙 Dark Mode</button>
+        </nav>
+    </header>
+
+    <main class="auth-wrapper">
+        <div class="auth-card">
+            <h1>Restricted Access</h1>
+            <p>Please identify yourself to enter the Design Assessment facility.</p>
+            
+            <form id="login-form">
+                <div class="input-group">
+                    <label for="username">Designer Alias</label>
+                    <input type="text" id="username" class="auth-input" placeholder="Enter your name..." required autocomplete="off">
+                </div>
+                
+                <div class="input-group">
+                    <label for="passcode">Clearance Code</label>
+                    <input type="password" id="passcode" class="auth-input" placeholder="Hint: Type anything to enter" required>
+                </div>
+
+                <button type="submit" class="btn-auth">Authenticate</button>
+            </form>
+        </div>
+    </main>
+
+    <footer class="global-footer">
+        Design Ideation Module Final Project
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

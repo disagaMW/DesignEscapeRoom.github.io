@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome - The Design Escape</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="centered-layout">
+
+    <script>
+        if (localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-mode');
+    </script>
+
+    <ul class="bg-shapes">
+        <li></li><li></li><li></li><li></li><li></li>
+        <li></li><li></li><li></li><li></li><li></li>
+    </ul>
+
+    <header class="global-header">
+        <div class="logo">🎨 The Design Escape</div>
+        <nav class="global-nav">
+            <button id="dark-mode-toggle">🌙 Dark Mode</button>
+            <button id="logout-btn">🚪 Log Out</button>
+        </nav>
+    </header>
+
+    <main class="auth-wrapper">
+        <div class="auth-card">
+            <div class="success-icon">✅</div>
+            <h1 id="welcome-name">Access Granted</h1>
+            <p><strong>Mission Briefing:</strong><br><br>
+               The design matrix has been corrupted. Typography is chaotic, layouts are broken, and visual balance has been completely lost.<br><br>
+               Your objective is to navigate through 5 secure rooms and apply fundamental design principles to restore order. 
+            </p>
+            
+            <button class="btn-auth" onclick="window.location.href='index.html'" style="background: #27ae60;">Enter Main Menu</button>
+        </div>
+    </main>
+
+    <footer class="global-footer">
+        Design Ideation Module Final Project
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
