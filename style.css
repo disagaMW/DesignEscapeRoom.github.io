@@ -1,4 +1,11 @@
 /* =========================================
+   ANTI-FLASH ANIMATION KILL SWITCH
+========================================= */
+.preload-transitions * {
+    transition: none !important;
+}
+
+/* =========================================
    GLOBAL STYLES & TYPOGRAPHY
 ========================================= */
 body {

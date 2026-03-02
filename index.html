@@ -10,10 +10,7 @@
 
     <script>
         if (localStorage.getItem('theme') === 'dark') {
-            const style = document.createElement('style');
-            style.id = 'anti-flash'; /* ✨ WE ADDED THIS ID ✨ */
-            style.textContent = 'body { background-color: #121212 !important; }';
-            document.head.append(style);
+            document.body.classList.add('dark-mode');
         }
     </script>
 

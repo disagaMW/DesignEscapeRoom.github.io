@@ -1,22 +1,22 @@
 /* =========================================
    GLOBAL UTILITIES
 ========================================= */
+// 1. Turn transitions back on after the page loads instantly
+setTimeout(() => {
+    document.body.classList.remove('preload-transitions');
+}, 50);
+
 const darkModeToggle = document.getElementById('dark-mode-toggle');
 
-// 1. TELL THE ELEMENTS TO TURN DARK!
-if (localStorage.getItem('theme') === 'dark') {
-    document.body.classList.add('dark-mode'); // ✨ This is the missing line! ✨
-    if (darkModeToggle) darkModeToggle.textContent = '☀️ Light Mode';
+// 2. Update the button text on load
+if (document.body.classList.contains('dark-mode') && darkModeToggle) {
+    darkModeToggle.textContent = '☀️ Light Mode';
 }
 
-// 2. The Button Click Logic
+// 3. The Button Click Logic
 if (darkModeToggle) {
     darkModeToggle.addEventListener('click', () => {
         document.body.classList.toggle('dark-mode');
-        
-        // Kill the anti-flash script so Light Mode can breathe
-        const antiFlash = document.getElementById('anti-flash');
-        if (antiFlash) antiFlash.remove();
         
         if (document.body.classList.contains('dark-mode')) {
             localStorage.setItem('theme', 'dark');

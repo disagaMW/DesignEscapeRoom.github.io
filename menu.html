@@ -28,9 +28,7 @@
 
     <script>
         if (localStorage.getItem('theme') === 'dark') {
-            const style = document.createElement('style');
-            style.textContent = 'body { background-color: #121212 !important; }';
-            document.head.append(style);
+            document.body.classList.add('dark-mode');
         }
     </script>
 
