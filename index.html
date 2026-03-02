@@ -3,79 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Design Principle Escape Room</title>
+    <title>Login - The Design Escape</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        .menu-header { text-align: center; margin-bottom: 20px; }
-        .menu-header h1 { font-size: 3rem; color: #2c3e50; margin-bottom: 10px; }
-        body.dark-mode .menu-header h1 { color: #f4f4f9; }
-        .menu-header p { font-size: 1.2rem; color: #7f8c8d; }
-        .level-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 30px; border-top: 2px solid #eee; padding-top: 30px; }
-        body.dark-mode .level-grid { border-color: #444; }
-        
-        .btn-start { background-color: #e74c3c; color: white; font-size: 1.5rem; width: 100%; padding: 20px; text-transform: uppercase; letter-spacing: 2px; animation: pulse 2s infinite; }
-        .btn-start:hover { background-color: #c0392b; transform: scale(1.02); }
-        .btn-level { background-color: #ecf0f1; color: #333; border: 1px solid #bdc3c7; }
-        body.dark-mode .btn-level { background-color: #333; color: #eee; border-color: #555; }
-        .btn-level:hover { background-color: #bdc3c7; color: #2c3e50; }
-
-        /* Ensure the main content sits ABOVE the animated background */
-        #page-wrapper { z-index: 10; position: relative; }
-        #dark-mode-toggle { z-index: 20; }
-    </style>
 </head>
 <body class="centered-layout">
 
     <script>
-        if (localStorage.getItem('theme') === 'dark') {
-            document.body.classList.add('dark-mode');
-        }
+        if (localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-mode');
     </script>
 
     <ul class="bg-shapes">
-        <li></li> <li></li> <li></li> <li></li> <li></li> <li></li> <li></li> <li></li> <li></li> <li></li> </ul>
+        <li></li><li></li><li></li><li></li><li></li>
+        <li></li><li></li><li></li><li></li><li></li>
+    </ul>
 
     <header class="global-header">
-        <a href="index.html" class="logo">🎨 The Design Escape</a>
+        <div class="logo">🎨 The Design Escape</div>
         <nav class="global-nav">
-            <a href="index.html">Home</a>
-            <a href="level1.html">L1</a>
-            <a href="level2.html">L2</a>
-            <a href="level3.html">L3</a>
-            <a href="level4.html">L4</a>
-            <a href="level5.html">L5</a>
             <button id="dark-mode-toggle">🌙 Dark Mode</button>
-            <button id="logout-btn">🚪 Log Out</button>
         </nav>
     </header>
 
-    <main id="page-wrapper">
-        <div class="room-container" style="max-width: 600px;">
+    <main class="auth-wrapper">
+        <div class="auth-card">
+            <h1>Restricted Access</h1>
+            <p>Please identify yourself to enter the Design Assessment facility.</p>
             
-            <div class="menu-header">
-                <h1>The Design Escape</h1>
-                <p>Interactive Design Principles Challenge</p>
-            </div>
+            <form id="login-form">
+                <div class="input-group">
+                    <label for="username">Designer Alias</label>
+                    <input type="text" id="username" class="auth-input" placeholder="Enter your name..." required autocomplete="off">
+                </div>
+                
+                <div class="input-group">
+                    <label for="passcode">Clearance Code</label>
+                    <input type="password" id="passcode" class="auth-input" placeholder="Hint: Type anything to enter" required>
+                </div>
 
-            <p style="text-align: center; margin-bottom: 30px; line-height: 1.6;">
-                Welcome to the Design Principle Escape Room. To unlock the doors and escape, you must prove your understanding of fundamental design theories by fixing broken layouts, restoring typography, and balancing visual weight.
-            </p>
-
-            <button class="btn btn-start" onclick="window.location.href='level1.html'">Start Escape Room</button>
-
-            <div class="level-grid">
-                <button class="btn btn-level" onclick="window.location.href='level1.html'">Level 1: Balance</button>
-                <button class="btn btn-level" onclick="window.location.href='level2.html'">Level 2: Contrast</button>
-                <button class="btn btn-level" onclick="window.location.href='level3.html'">Level 3: Proximity</button>
-                <button class="btn btn-level" onclick="window.location.href='level4.html'">Level 4: Typography</button>
-                <button class="btn btn-level" onclick="window.location.href='level5.html'" style="grid-column: 1 / -1; background-color: #9b59b6; color: white; border: none;">Level 5: Grand Finale Layout</button>
-            </div>
-
+                <button type="submit" class="btn-auth">Authenticate</button>
+            </form>
         </div>
     </main>
 
     <footer class="global-footer">
-        Design Ideation Module Final Project | University of Kelaniya
+        Design Ideation Module Final Project
     </footer>
 
     <script src="script.js"></script>

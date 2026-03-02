@@ -409,26 +409,21 @@ const logoutBtn = document.getElementById('logout-btn');
 
 if (logoutBtn) {
     logoutBtn.addEventListener('click', () => {
-        // 1. Remove the user's name from the browser's memory
         localStorage.removeItem('designerAlias');
-        
-        // 2. Redirect them back to the login page
-        window.location.href = 'login.html';
+        // Changed to index.html (the new login page)
+        window.location.href = 'index.html'; 
     });
 }
 
 // --- OPTIONAL SECURITY CHECK ---
-// If you want to force users to log in, this kicks them back to the login page 
-// if they try to access a level without a saved name!
 const currentPath = window.location.pathname;
 const savedAlias = localStorage.getItem('designerAlias');
 
-if (!currentPath.includes('login.html') && !savedAlias) {
-    window.location.href = 'login.html';
-
-
-
+// Changed login.html to index.html
+if (!currentPath.includes('index.html') && !currentPath.endsWith('/') && !savedAlias) {
+    window.location.href = 'index.html';
 }
+
 
 /* =========================================
    LEVEL NAVIGATION FUNCTIONS
