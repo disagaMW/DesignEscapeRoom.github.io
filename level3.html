@@ -11,7 +11,10 @@
 
     <script>
         if (localStorage.getItem('theme') === 'dark') {
-            document.body.classList.add('dark-mode');
+            const style = document.createElement('style');
+            style.id = 'anti-flash'; /* ✨ WE ADDED THIS ID ✨ */
+            style.textContent = 'body { background-color: #121212 !important; }';
+            document.head.append(style);
         }
     </script>
 
