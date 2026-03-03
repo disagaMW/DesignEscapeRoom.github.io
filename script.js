@@ -14,6 +14,7 @@ if (document.body.classList.contains('dark-mode') && darkModeToggle) {
 }
 
 // 3. The Button Click Logic
+// 2. The Button Click Logic
 if (darkModeToggle) {
     darkModeToggle.addEventListener('click', () => {
         document.body.classList.toggle('dark-mode');
@@ -21,12 +22,43 @@ if (darkModeToggle) {
         if (document.body.classList.contains('dark-mode')) {
             localStorage.setItem('theme', 'dark');
             darkModeToggle.textContent = '☀️ Light Mode';
+            // Sync the base coat for the next page load
+            document.documentElement.style.backgroundColor = '#121212'; 
         } else {
             localStorage.setItem('theme', 'light');
             darkModeToggle.textContent = '🌙 Dark Mode';
+            // Sync the base coat for the next page load
+            document.documentElement.style.backgroundColor = '#f4f4f9'; 
         }
     });
 }
+
+/* =========================================
+   THE NUCLEAR BFCACHE FIX 
+========================================= */
+window.addEventListener('pageshow', function(event) {
+    // 'event.persisted' is a browser flag that equals TRUE only if the 
+    // page is being loaded from the Back-Forward frozen cache.
+    if (event.persisted) {
+        // Force an instant refresh. This bypasses the frozen screenshot 
+        // and forces the browser to read the <head> script immediately!
+        window.location.reload();
+    } else {
+        // Normal theme syncing just in case
+        const currentTheme = localStorage.getItem('theme');
+        const darkModeToggle = document.getElementById('dark-mode-toggle');
+        
+        if (currentTheme === 'dark') {
+            document.documentElement.style.backgroundColor = '#121212';
+            document.body.classList.add('dark-mode');
+            if (darkModeToggle) darkModeToggle.textContent = '☀️ Light Mode';
+        } else {
+            document.documentElement.style.backgroundColor = '#f4f4f9';
+            document.body.classList.remove('dark-mode');
+            if (darkModeToggle) darkModeToggle.textContent = '🌙 Dark Mode';
+        }
+    }
+});
 
 /* =========================================
    SMART SCROLLING HEADER

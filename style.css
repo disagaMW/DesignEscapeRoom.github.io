@@ -64,7 +64,7 @@ body {
     background-color: #f4f4f9;
     color: #333;
     margin: 0;
-    transition: background-color 0.4s ease, color 0.4s ease;
+    
 }
 
 body.dark-mode {
@@ -163,6 +163,52 @@ body.dark-mode #dark-mode-toggle { background-color: #f4f4f9; color: #121212; }
 button:disabled { background-color: #bdc3c7 !important; color: #7f8c8d !important; cursor: not-allowed !important; opacity: 0.7; transform: none !important; box-shadow: none !important;}
 button:not(:disabled) { background-color: #27ae60; color: white; }
 button:not(:disabled):hover { transform: scale(1.02); box-shadow: 0 5px 15px rgba(39, 174, 96, 0.4); }
+
+/* =========================================
+   MENU: LEVEL GRID & BUTTONS
+========================================= */
+.level-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important; /* Forces a perfect 2-column layout */
+    gap: 15px !important; /* Adds breathing room between buttons */
+    margin-top: 20px !important;
+    margin-bottom: 20px !important;
+    width: 100% !important;
+}
+
+.btn-level {
+    background: #333333 !important; /* Sleek dark grey */
+    color: #ffffff !important;
+    border: 1px solid #444 !important;
+    padding: 15px !important;
+    border-radius: 8px !important;
+    font-size: 1rem !important;
+    font-weight: bold !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    width: 100% !important;
+    font-family: inherit !important;
+}
+
+/* The satisfying hover lift effect */
+.btn-level:hover {
+    background: #444444 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2) !important;
+    border-color: #555 !important;
+}
+
+/* Light Mode support for the buttons */
+body:not(.dark-mode) .btn-level {
+    background: #f1f2f6 !important;
+    color: #2c3e50 !important;
+    border-color: #dcdde1 !important;
+}
+
+body:not(.dark-mode) .btn-level:hover {
+    background: #dfe4ea !important;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1) !important;
+}
 
 
 

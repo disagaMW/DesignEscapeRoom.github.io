@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Design Principle Escape Room</title>
+
+    <script>
+        // This instantly paints the <html> tag before the CSS even downloads
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.style.backgroundColor = '#121212';
+        } else {
+            document.documentElement.style.backgroundColor = '#f4f4f9';
+        }
+    </script>
+
     <link rel="stylesheet" href="style.css">
     <style>
         .menu-header { text-align: center; margin-bottom: 20px; }
@@ -69,12 +79,20 @@
             <button class="btn btn-start" onclick="window.location.href='level1.html'">Start Escape Room</button>
 
             <div class="level-grid">
-                <button class="btn btn-level" onclick="window.location.href='level1.html'">Level 1: Balance</button>
-                <button class="btn btn-level" onclick="window.location.href='level2.html'">Level 2: Contrast</button>
-                <button class="btn btn-level" onclick="window.location.href='level3.html'">Level 3: Proximity</button>
-                <button class="btn btn-level" onclick="window.location.href='level4.html'">Level 4: Typography</button>
-                <button class="btn btn-level" onclick="window.location.href='level5.html'" style="grid-column: 1 / -1; background-color: #9b59b6; color: white; border: none;">Level 5: Grand Finale Layout</button>
-            </div>
+            <button class="btn-level" onclick="window.location.href='level1.html'">Level 1: Balance</button>
+            <button class="btn-level" onclick="window.location.href='level2.html'">Level 2: Contrast</button>
+            <button class="btn-level" onclick="window.location.href='level3.html'">Level 3: Proximity</button>
+            <button class="btn-level" onclick="window.location.href='level4.html'">Level 4: Typography</button>
+            
+            <button class="btn-level" onclick="window.location.href='level5.html'">Level 5: Alignment</button>
+            <button class="btn-level" onclick="window.location.href='level6.html'">Level 6: White Space</button>
+            <button class="btn-level" onclick="window.location.href='level7.html'">Level 7: Accessibility</button>
+            <button class="btn-level" onclick="window.location.href='level8.html'">Level 8: Consistency</button>
+        </div>
+
+        <button class="btn-finale" onclick="window.location.href='level9.html'" style="margin-top: 15px; width: 100%; background-color: #9b59b6; color: white; padding: 15px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">
+            Level 9: Grand Finale Layout
+        </button>
 
         </div>
     </main>
