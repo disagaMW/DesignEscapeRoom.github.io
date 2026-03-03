@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Level 5: Alignment - The Design Escape</title>
+    <title>Level 6: White Space - The Design Escape</title>
     <link rel="stylesheet" href="style.css">
     
     
@@ -39,31 +39,25 @@
 
     <main class="level-container">
         <div class="instructions">
-            <h2>Level 5: The Broken Grid</h2>
-            <p>A core design principle is <strong>Alignment</strong>. It creates a sharp, ordered appearance. Click the corrupted data cards below to cycle through their text alignments until the grid is unified!</p>
+            <h2>Level 6: The Claustrophobia Room</h2>
+            <p>Good design needs room to breathe. The UI card below is completely cramped, causing visual tension. Drag the slider to increase the <strong>White Space</strong> (padding and line-height) until it reaches a harmonious balance.</p>
         </div>
 
-        <div class="alignment-puzzle">
-            <div class="align-card align-right" onclick="cycleAlignment(this)">
-                <h3>User Profile</h3>
-                <p>ID: 84729</p>
-                <div class="fake-btn">View</div>
-            </div>
-            <div class="align-card align-center" onclick="cycleAlignment(this)">
-                <h3>Security Logs</h3>
-                <p>3 Errors</p>
-                <div class="fake-btn">Clear</div>
-            </div>
-            <div class="align-card align-right" onclick="cycleAlignment(this)">
-                <h3>System Status</h3>
-                <p>Stable</p>
-                <div class="fake-btn">Reboot</div>
-            </div>
+        <div class="slider-container">
+            <label for="spacing-slider">Inject Breathing Room:</label>
+            <input type="range" id="spacing-slider" min="0" max="50" value="0">
+        </div>
+
+        <div class="claustrophobia-card" id="breathing-card">
+            <h3>Design News</h3>
+            <img src="images/splash.jpg" alt="A color splash" class="card-img">
+            <p>Negative space is the area between and around elements in a design. It prevents clutter, reduces cognitive load, and helps the user's eye naturally flow through the content.</p>
+            <button class="fake-btn">Read More</button>
         </div>
 
         <div class="action-footer">
-            <h3 id="success-text" class="success-text">Grid Restored!</h3>
-            <button id="proceed-btn" class="btn-proceed" disabled onclick="goToLevel6()">Proceed to Level 6</button>
+            <h3 id="success-text" class="success-text">Ah, much better! Harmony restored.</h3>
+            <button id="proceed-btn" class="btn-proceed" disabled onclick="goToLevel7()">Proceed to Level 7</button>
         </div>
     </main>
 

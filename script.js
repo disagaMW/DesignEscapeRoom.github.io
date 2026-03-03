@@ -229,16 +229,160 @@ if (ransomNote) {
     passcodeInput.addEventListener('input', () => {
         if (passcodeInput.value.trim().toUpperCase() === 'CREATIVITY') {
             finishBtn4.disabled = false;
-            finishBtn4.textContent = "Passcode Accepted - Unlock Final Level";
+            finishBtn4.textContent = "Passcode Accepted - Unlock Level 5";
         } else {
             finishBtn4.disabled = true;
-            finishBtn4.textContent = "Proceed to Final Level";
+            finishBtn4.textContent = "Proceed to Level 5";
         }
     });
 }
 
 /* =========================================
-   LEVEL 5 LOGIC (Grand Finale Layout)
+   LEVEL 5 LOGIC (Alignment)
+========================================= */
+window.cycleAlignment = function(card) {
+    // Array of the three possible states
+    const states = ['align-left', 'align-center', 'align-right'];
+    
+    // Find which state the card is currently in
+    let currentState = states.find(state => card.classList.contains(state));
+    let nextIndex = (states.indexOf(currentState) + 1) % states.length;
+    let nextState = states[nextIndex];
+
+    // Swap the classes
+    card.classList.remove(currentState);
+    card.classList.add(nextState);
+
+    checkAlignmentWin();
+};
+
+function checkAlignmentWin() {
+    const cards = document.querySelectorAll('.align-card');
+    if (cards.length === 0) return;
+
+    // Check if ALL cards have the 'align-left' class
+    const allLeft = Array.from(cards).every(card => card.classList.contains('align-left'));
+
+    if (allLeft) {
+        cards.forEach(card => card.classList.add('success-lock')); 
+        
+        // ✨ UNLOCK THE GRAYED-OUT BUTTON ✨
+        const proceedBtn = document.getElementById('proceed-btn');
+        const successText = document.getElementById('success-text');
+        
+        if (proceedBtn) proceedBtn.disabled = false; // Turns it green!
+        if (successText) successText.style.opacity = '1'; // Fades in the text!
+    }
+}
+
+/* =========================================
+   LEVEL 6 LOGIC (White Space)
+========================================= */
+const spacingSlider = document.getElementById('spacing-slider');
+const breathingCard = document.getElementById('breathing-card');
+
+if (spacingSlider && breathingCard) {
+    spacingSlider.addEventListener('input', function() {
+        const val = parseInt(this.value);
+        
+        // 1. Dynamically inject CSS padding and gap
+        breathingCard.style.padding = `${val}px`;
+        breathingCard.style.gap = `${val / 2}px`;
+        
+        // 2. Dynamically fix the squished text
+        const p = breathingCard.querySelector('p');
+        if (p) {
+            p.style.lineHeight = 1 + (val / 75); 
+        }
+
+        const proceedBtn = document.getElementById('proceed-btn');
+        const successText = document.getElementById('success-text');
+
+        // 3. Check for the perfect "Sweet Spot" (Between 24px and 28px padding)
+        if (val >= 24 && val <= 28) {
+            // It's perfect! Turn green and unlock the button.
+            breathingCard.classList.add('success-lock');
+            if (proceedBtn) proceedBtn.disabled = false;
+            if (successText) successText.style.opacity = '1';
+        } else {
+            // It's too cramped OR too spaced out! Turn red and lock the button.
+            breathingCard.classList.remove('success-lock');
+            if (proceedBtn) proceedBtn.disabled = true;
+            if (successText) successText.style.opacity = '0';
+        }
+    });
+}
+
+/* =========================================
+   LEVEL 7 LOGIC (Color & Accessibility)
+========================================= */
+window.applyPalette = function(paletteType) {
+    const colorCard = document.getElementById('color-card');
+    const proceedBtn = document.getElementById('proceed-btn');
+    const successText = document.getElementById('success-text');
+    
+    // Remove all palette classes first
+    colorCard.classList.remove('toxic-palette', 'faded-palette', 'accessible-palette');
+    
+    // Apply the new one based on the button clicked
+    if (paletteType === 'toxic' || paletteType === 'faded') {
+        if (paletteType === 'toxic') colorCard.classList.add('toxic-palette');
+        if (paletteType === 'faded') colorCard.classList.add('faded-palette');
+        
+        // Lock the button and hide text
+        if (proceedBtn) proceedBtn.disabled = true;
+        if (successText) successText.style.opacity = '0';
+    } else if (paletteType === 'accessible') {
+        colorCard.classList.add('accessible-palette');
+        
+        // Unlock the button and show text!
+        if (proceedBtn) proceedBtn.disabled = false;
+        if (successText) successText.style.opacity = '1';
+    }
+};
+
+/* =========================================
+   LEVEL 8 LOGIC (The Frankenstein Form)
+========================================= */
+window.cycleSystem = function(element) {
+    // The sequence of themes to cycle through
+    const themes = ['theme-win95', 'theme-neon', 'theme-brutal', 'theme-modern'];
+    
+    // Find current theme and calculate the next one
+    let currentTheme = themes.find(t => element.classList.contains(t));
+    let nextIndex = (themes.indexOf(currentTheme) + 1) % themes.length;
+    let nextTheme = themes[nextIndex];
+
+    // Swap classes
+    element.classList.remove(currentTheme);
+    element.classList.add(nextTheme);
+
+    // ✨ WIN CONDITION CHECK ✨
+    const allElements = document.querySelectorAll('.shape-shifter');
+    const proceedBtn = document.getElementById('proceed-btn');
+    const successText = document.getElementById('success-text');
+
+    // Check if EVERY element has the 'theme-modern' class
+    const isUnified = Array.from(allElements).every(el => el.classList.contains('theme-modern'));
+
+    if (isUnified) {
+        // Lock all elements so they can't be messed up again
+        allElements.forEach(el => el.classList.add('success-lock'));
+        
+        // Unlock the Proceed button
+        if (proceedBtn) proceedBtn.disabled = false;
+        if (successText) successText.style.opacity = '1';
+    } else {
+        // Keep it locked if they cycle past the modern theme!
+        if (proceedBtn) proceedBtn.disabled = true;
+        if (successText) successText.style.opacity = '0';
+    }
+};
+
+
+
+/* =========================================
+   LEVEL 9 LOGIC (Grand Finale Layout)
 ========================================= */
 const l5Elements = document.querySelectorAll('.ui-element'); 
 if (l5Elements.length > 0) {
@@ -248,12 +392,14 @@ if (l5Elements.length > 0) {
     l5Elements.forEach(item => {
         item.addEventListener('dragstart', function() { 
             draggedL5Item = this; 
-            document.body.classList.add('is-dragging'); // Crucial bug fix
+            document.body.classList.add('is-dragging'); 
+            this.classList.add('dragging-active'); // ✨ ADDED THIS
             setTimeout(() => this.style.display = 'none', 0); 
         });
         item.addEventListener('dragend', function() { 
             setTimeout(() => { 
                 this.style.display = ''; 
+                this.classList.remove('dragging-active'); // ✨ ADDED THIS
                 draggedL5Item = null; 
                 document.body.classList.remove('is-dragging'); 
             }, 0); 
@@ -290,7 +436,7 @@ if (l5Elements.length > 0) {
 }
 
 // =========================================
-// LEVEL 5 SUBMIT & MODAL FUNCTIONS
+// LEVEL 9 SUBMIT & MODAL FUNCTIONS
 // =========================================
 
 window.submitDesign = function() {
@@ -354,14 +500,25 @@ window.showModal = function(percentage) {
 };
 
 window.retry = function() {
+    // 1. Hide the modal
     const modal = document.getElementById('result-modal');
     if (modal) modal.style.display = 'none';
     
-    // Reset the circle colors for the next try
+    // 2. Reset the score circle colors
     const scoreDisplay = document.getElementById('score-display');
     if (scoreDisplay) {
         scoreDisplay.style.borderColor = '#3498db';
         scoreDisplay.style.color = '';
+    }
+
+    // 3. ✨ NEW: Send all elements back to the menu!
+    const menuZone = document.getElementById('menu-zone');
+    const allElements = document.querySelectorAll('.ui-element');
+    
+    if (menuZone) {
+        allElements.forEach(el => {
+            menuZone.appendChild(el);
+        });
     }
 };
 
@@ -430,21 +587,16 @@ if (!currentPath.includes('index.html') && !currentPath.endsWith('/') && !savedA
 }
 
 
-/* =========================================
-   LEVEL NAVIGATION FUNCTIONS
-========================================= */
-window.goToLevel2 = function() { 
-    window.location.href = "level2.html"; 
-};
+// =========================================
+ //  LEVEL NAVIGATION FUNCTIONS
+//========================================= */
 
-window.goToLevel3 = function() { 
-    window.location.href = "level3.html"; 
-};
-
-window.goToLevel4 = function() { 
-    window.location.href = "level4.html"; 
-};
-
-window.goToLevel5 = function() { 
-    window.location.href = "level5.html"; 
-};
+window.goToLevel2 = function() { window.location.href = "level2.html"; };
+window.goToLevel3 = function() { window.location.href = "level3.html"; };
+window.goToLevel4 = function() { window.location.href = "level4.html"; };
+window.goToLevel5 = function() { window.location.href = "level5.html"; };
+// ✨ NEW LEVELS ✨
+window.goToLevel6 = function() { window.location.href = "level6.html"; };
+window.goToLevel7 = function() { window.location.href = "level7.html"; };
+window.goToLevel8 = function() { window.location.href = "level8.html"; };
+window.goToLevel9 = function() { window.location.href = "level9.html"; }; // The Grand Finale!

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escape Room - Level 5: The Grand Finale</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="app-layout">
+
+    <script>
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+        }
+    </script>
+
+    <ul class="bg-shapes">
+        <li></li><li></li><li></li><li></li><li></li>
+        <li></li><li></li><li></li><li></li><li></li>
+    </ul>
+
+    <header class="global-header">
+        <a href="menu.html" class="logo">🎨 The Design Escape</a>
+        <nav class="global-nav">
+            <a href="menu.html">Menu</a>
+           <a href="level1.html">L1</a>
+            <a href="level2.html">L2</a>
+            <a href="level3.html">L3</a>
+            <a href="level4.html">L4</a>
+            <a href="level5.html">L5</a>
+            <a href="level6.html">L6</a>
+            <a href="level7.html">L7</a>
+            <a href="level8.html">L8</a>
+            <a href="level9.html">L9</a>
+            <a href="contact.html">Contact</a>
+            <button id="dark-mode-toggle">🌙 Dark Mode</button>
+            <button id="logout-btn">🚪 Log Out</button>
+        </nav>
+    </header>
+
+    <main id="page-wrapper" style="height: 100%; display: flex; flex-direction: column;">
+        <div class="header-bar">
+            <h1>Level 9: Master the Layout</h1>
+            <button class="btn btn-submit" onclick="submitDesign()">✅ Submit Design</button>
+        </div>
+
+        <div class="workspace">
+            <div class="menu-panel" id="menu-zone">
+                <div class="menu-title">Uncategorized Elements</div>
+                <div class="ui-element el-hero" draggable="true" id="item-hero">PROMO BANNER</div>
+                <div class="ui-element el-sidebar" draggable="true" id="item-sidebar"></div>
+                <div class="ui-element el-products" draggable="true" id="item-products">
+                    <div class="product-card"></div><div class="product-card"></div><div class="product-card"></div>
+                </div>
+                <div class="ui-element el-header" draggable="true" id="item-header"></div>
+                <div class="ui-element el-footer" draggable="true" id="item-footer">© 2026 E-Commerce Store</div>
+                <div class="ui-element el-cta" draggable="true" id="item-cta">🔥 LIMITED TIME: 50% OFF 🔥</div>
+            </div>
+
+            <div class="canvas-panel">
+                <div class="drop-zone" id="zone-header" data-expected="item-header"><span>Drop Header Here</span></div>
+                <div class="drop-zone" id="zone-hero" data-expected="item-hero"><span>Drop Hero Banner Here</span></div>
+                <div class="drop-zone" id="zone-sidebar" data-expected="item-sidebar"><span>Drop Sidebar Here</span></div>
+                <div class="drop-zone" id="zone-products" data-expected="item-products"><span>Drop Product Grid Here</span></div>
+                <div class="drop-zone" id="zone-cta" data-expected="item-cta"><span>Drop Call to Action Here</span></div>
+                <div class="drop-zone" id="zone-footer" data-expected="item-footer"><span>Drop Footer Here</span></div>
+            </div>
+        </div>
+    </main>
+
+    <div class="modal-overlay" id="result-modal">
+        <div class="modal-content">
+            <h2 id="modal-title">Design Evaluation</h2>
+            <div class="score-circle" id="score-display">0%</div>
+            <p id="modal-feedback">Evaluating layout based on hierarchy, balance, and proximity...</p>
+            <div class="modal-buttons">
+                <button class="btn btn-dark" onclick="retry()">🔄 Retry</button>
+                <button class="btn btn-submit" onclick="showSolution()">👁️ See 100% Correct Layout</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="global-footer">
+       Design Ideation Module Final Project &copy; <br><br>
+        <address>
+        Group M <br>
+        Design Ideation and Creative Development <br>
+        Faculty of Computing and Information Technology <br>
+        University of Kelaniya
+        </address>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

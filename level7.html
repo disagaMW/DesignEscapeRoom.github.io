@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Level 5: Alignment - The Design Escape</title>
+    <title>Level 7: Accessibility - The Design Escape</title>
     <link rel="stylesheet" href="style.css">
     
     
@@ -39,31 +39,25 @@
 
     <main class="level-container">
         <div class="instructions">
-            <h2>Level 5: The Broken Grid</h2>
-            <p>A core design principle is <strong>Alignment</strong>. It creates a sharp, ordered appearance. Click the corrupted data cards below to cycle through their text alignments until the grid is unified!</p>
+            <h2>Level 7: The Toxic Palette</h2>
+            <p>Design must be accessible to everyone. The UI card below is currently unreadable due to terrible color contrast. Select the swatch that provides a safe, readable, and professional contrast ratio to unlock the next door.</p>
         </div>
 
-        <div class="alignment-puzzle">
-            <div class="align-card align-right" onclick="cycleAlignment(this)">
-                <h3>User Profile</h3>
-                <p>ID: 84729</p>
-                <div class="fake-btn">View</div>
-            </div>
-            <div class="align-card align-center" onclick="cycleAlignment(this)">
-                <h3>Security Logs</h3>
-                <p>3 Errors</p>
-                <div class="fake-btn">Clear</div>
-            </div>
-            <div class="align-card align-right" onclick="cycleAlignment(this)">
-                <h3>System Status</h3>
-                <p>Stable</p>
-                <div class="fake-btn">Reboot</div>
-            </div>
+        <div class="swatch-container">
+            <button class="swatch-btn swatch-toxic" onclick="applyPalette('toxic')">Toxic Neon</button>
+            <button class="swatch-btn swatch-faded" onclick="applyPalette('faded')">Washed Out</button>
+            <button class="swatch-btn swatch-accessible" onclick="applyPalette('accessible')">High Contrast</button>
+        </div>
+
+        <div class="color-puzzle-card toxic-palette" id="color-card">
+            <h3>System Warning</h3>
+            <p>This text is incredibly difficult to read. It causes eye strain and fails all basic accessibility standards.</p>
+            <button class="fake-btn">Acknowledge</button>
         </div>
 
         <div class="action-footer">
-            <h3 id="success-text" class="success-text">Grid Restored!</h3>
-            <button id="proceed-btn" class="btn-proceed" disabled onclick="goToLevel6()">Proceed to Level 6</button>
+            <h3 id="success-text" class="success-text">Perfect! High contrast achieved.</h3>
+            <button id="proceed-btn" class="btn-proceed" disabled onclick="goToLevel8()">Proceed to Level 8</button>
         </div>
     </main>
 

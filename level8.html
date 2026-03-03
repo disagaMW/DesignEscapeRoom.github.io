@@ -3,19 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Escape Room - Level 1: Balance</title>
+    <title>Level 8: Consistency - The Design Escape</title>
     <link rel="stylesheet" href="style.css">
+    
+    
 </head>
-<body class="centered-layout">
+<body class="centered-layout preload-transitions">
 
-   <script>
-        if (localStorage.getItem('theme') === 'dark') {
-            document.body.classList.add('dark-mode');
-        }
+    <script>
+        if (localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-mode');
     </script>
 
     <ul class="bg-shapes">
-        <li></li> <li></li> <li></li> <li></li> <li></li> <li></li> <li></li> <li></li> <li></li> <li></li> </ul>
+        <li></li><li></li><li></li><li></li><li></li>
+    </ul>
 
     <header class="global-header">
         <a href="menu.html" class="logo">🎨 The Design Escape</a>
@@ -36,24 +37,31 @@
         </nav>
     </header>
 
-    <main id="page-wrapper">
+    <main class="level-container">
         <div class="instructions">
-            <h1>Level 1: The Tilted Room</h1>
-            <p>This layout feels heavy on one side. Restore the <strong>Balance</strong> to unlock the door.</p>
+            <h2>Level 8: The Frankenstein Form</h2>
+            <p><strong>Consistency</strong> is the backbone of a good Design System. This profile form is a chaotic mess of mixed UI styles. Click each element to cycle through its design themes until the entire form is unified!</p>
         </div>
 
-        <div class="room-container">
-            <div class="scale">
-                <div class="weight" id="visual-weight"></div>
+        <div class="consistency-panel" style="flex-direction: column; align-items: stretch; max-width: 400px;">
+            <h3 style="text-align: center; margin-top: 0; color: #2c3e50;">Profile Settings</h3>
+            
+            <div class="shape-shifter theme-win95" onclick="cycleSystem(this)">
+                User Alias: John Doe
             </div>
             
-            <div class="controls">
-                <input type="range" id="balance-slider" min="0" max="100" value="0">
+            <div class="shape-shifter theme-neon" onclick="cycleSystem(this)">
+                [ x ] Subscribe to alerts
             </div>
+            
+            <div class="shape-shifter theme-brutal" onclick="cycleSystem(this)" style="text-align: center;">
+                Save Changes
+            </div>
+        </div>
 
-            <div style="text-align: center;">
-                <button id="next-btn" onclick="goToLevel2()" disabled>Proceed to Level 2</button>
-            </div>
+        <div class="action-footer">
+            <h3 id="success-text" class="success-text">System unified! The final door is open.</h3>
+            <button id="proceed-btn" class="btn-proceed" disabled onclick="goToLevel9()">Enter The Grand Finale</button>
         </div>
     </main>
 
